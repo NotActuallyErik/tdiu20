@@ -27,13 +27,13 @@ public:
     bool is_am();
     std::string to_string();
 
-    bool operator<(Time &t1);   
-    bool operator>(Time &t1);
-    bool operator<=(Time &t1);
-    bool operator>=(Time &t1);
-    bool operator==(Time &t1);
-    bool operator!=(Time &t1);
-    void operator<<(); // TODO: Implement.
+    bool operator<(Time& t1);   
+    bool operator>(Time& t1);
+    bool operator<=(Time& t1);
+    bool operator>=(Time& t1);
+    bool operator==(Time& t1);
+    bool operator!=(Time& t1);
+    //void operator<<(); // TODO: Implement.
     Time& operator++(int);
     Time& operator--(int);
 

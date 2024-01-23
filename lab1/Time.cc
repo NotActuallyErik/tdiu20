@@ -157,32 +157,32 @@ int Time::get_second()
     return this->second;
 }
 
-bool Time::operator<(Time &t1)
+bool Time::operator<(Time&  t1)
 {
     return (this->to_seconds() < t1.to_seconds());
 }
 
-bool Time::operator>(Time &t1)
+bool Time::operator>(Time&  t1)
 {
     return (this->to_seconds() > t1.to_seconds());
 }
 
-bool Time::operator<=(Time &t1)
+bool Time::operator<=(Time&  t1)
 {
     return (this->to_seconds() <= t1.to_seconds());
 }
 
-bool Time::operator>=(Time &t1)
+bool Time::operator>=(Time&  t1)
 {
     return (this->to_seconds() >= t1.to_seconds());
 }
 
-bool Time::operator==(Time &t1)
+bool Time::operator==(Time&  t1)
 {
     return (this->to_seconds() == t1.to_seconds());
 }
 
-bool Time::operator!=(Time &t1)
+bool Time::operator!=(Time&  t1)
 {
     return (this->to_seconds() != t1.to_seconds());
 }
