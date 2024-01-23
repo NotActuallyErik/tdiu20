@@ -64,6 +64,8 @@ TEST_CASE ("is_am")
 {
    Time t0{"05:00:00"};
    Time t1{"14:00:00"};
+   Time t2{"12:00:00"};
+   Timo t4{"00:00:00"};
    CHECK       ( t0.is_am() );
    CHECK_FALSE ( t1.is_am() );
    // Fill with extra corner cases!
@@ -81,18 +83,78 @@ TEST_CASE ("to_string")
    SECTION("24 hour format no argument")
    {
       CHECK( t0.to_string() == "00:00:00" );
+      CHECK( t1.to_string() == "11:59:59" );
+      CHECK( t2.to_string() == "12:00:00" );
+      CHECK( t3.to_string() == "13:00:00" );
+      CHECK( t4.to_string() == "23:59:59" );
       // Fill with more tests!
    }
    
    SECTION("24 hour format with argument")
    {
-      // Fill with more tests!
+      CHECK( t0.to_string(false) == "00:00:00" );
+      CHECK( t1.to_string(false) == "11:59:59" );
+      CHECK( t2.to_string(false) == "12:00:00" );
+      CHECK( t3.to_string(false) == "13:00:00" );
+      CHECK( t4.to_string(false) == "23:59:59" );
    } 
 
    SECTION("12 hour format")
    {
-      // Fill with more tests!
+      CHECK( t0.to_string(true) == "00am:00:00" );
+      CHECK( t1.to_string(true) == "11am:59:59" );
+      CHECK( t2.to_string(true) == "12pm:00:00" );
+      CHECK( t3.to_string(true) == "13pm:00:00" );
+      CHECK( t4.to_string(true) == "23pm:59:59" );
    }
+}
+
+TEST_CASE ("operators")
+{
+   Time t0{}
+   Time t1{11, 59, 59};
+   Time t2{23, 59, 59};
+   Time t4{0,  0,  0}
+
+   SECTION("Arithmetic operators")
+   {
+      SECTION("increment & decrement")
+      {
+         CHECK( t0++.to_string() == "00:00:01" );
+         CHECK( t0--.to_string() == "00:00:00" );
+         CHECK( ++t0.to_string() == "00:00:01" );
+         CHECK( --t0.to_string() == "00:00:00" );
+         CHECK( t1++.to_string() == "12:00:00" );
+         CHECK( t2++.to_string() == "00:00:00" );
+         CHECK( t0--.to_string() == "23:59:59" );
+      }
+
+      SECTION("addition & subtraction by integers")
+      {
+         // Do we even want to do this?
+      }
+   }
+
+   SECTION("Relational operators")
+   {
+      CHECK( t0 == t4 );
+      CHECK( t0 != t1 );
+      CHECK( t1 < t2  );
+      CHECK( t2 > t1  );
+      CHECK( t0 >= t4 );
+      CHECK( t0 <= t4 );
+      // Are there any potential edge-cases?
+   }  
+
+   SECTION("Assignment operators")
+   {
+      // This might not be in the scope of the lab tbh
+   }
+
+
+
+
+
 }
 
 // Fill with more tests of other functions and operators!
