@@ -10,8 +10,8 @@ int main(int argc, char const *argv[])
     //Time t1{22,33,44};
     Time t2{"11pm:59:59"};
     //Time empty{};
-
-    std::cout << (t2.to_string())  << std::endl;
+    Time ts{3600};
+    std::cout << ts.to_string()  << std::endl;
 
     return 0;
 }

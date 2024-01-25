@@ -74,6 +74,24 @@ Time::Time(std::string time) :
     eval_time();
 }
 
+Time::Time(int seconds)
+ {if (seconds > 86399)
+{
+    seconds = seconds - 86400;
+}
+    int hours = (int) seconds/1440;
+    seconds = seconds - hours*3600;
+
+    int minutes = (int) seconds/60;
+    seconds = seconds - minutes*60;
+
+   //int seconds = seconds;
+
+
+   this->hour = hours;
+   this->minute = minutes;
+   this->second = seconds;
+}
 
 void Time::parse_time(std::string time_string)
 {
@@ -86,6 +104,51 @@ void Time::parse_time(std::string time_string)
     this->minute = std::stoi(time_string.substr(3,2));
     this->second = std::stoi(time_string.substr(6,2));
     this->seconds_tot = to_seconds();
+}
+
+
+std::string Time::to_string(bool hr_format)
+{
+    std::string return_string;
+    std::string hh = std::to_string(this->hour);
+    std::string mm = std::to_string(this->minute);
+    std::string ss = std::to_string(this->second);
+
+    int hr = this->hour;
+
+    if (this->hour <= 9) 
+    {
+        hh = "0" + hh;
+    }
+
+    if (this->minute <= 9) 
+    {
+        mm = "0" + mm;
+    }
+
+    if (this->second <= 9) 
+    {
+        ss = "0" + ss;
+    }
+
+    if(hr_format)
+    {
+        if (this->hour > 12)
+        {
+            hh = std::to_string(hr - 12);
+            return hh + "pm:" + mm + ":" + ss;
+        }
+        else if (this->hour != 0) 
+        {return hh + "am:" + mm + ":" + ss;
+        }
+        if (this->hour == 0)
+        {
+            return "12am:" + mm + ":" + ss;
+        }
+    }
+        else return hh + ":" + mm + ":" + ss;
+
+        return "";
 }
 
 void Time::eval_time()
@@ -118,29 +181,6 @@ bool Time::is_am()
         return true;
 }
 
-std::string Time::to_string()
-{
-    std::string hh = std::to_string(this->hour);
-    std::string mm = std::to_string(this->minute);
-    std::string ss = std::to_string(this->second);
-
-    if (this->hour <= 9)
-    {
-        hh = "0" + hh;
-    }
-
-    if (this->minute <= 9)
-    {
-        mm = "0" + mm;
-    }
-
-    if (this->second <= 9)
-    {
-        ss = "0" + ss;
-    }
-
-    return hh + ":" + mm + ":" + ss;
-}
 
 int Time::get_hour()
 {
@@ -187,7 +227,54 @@ bool Time::operator!=(Time&  t1)
     return (this->to_seconds() != t1.to_seconds());
 }
 
-Time& Time::operator++(int)
+Time Time::operator++(int)
+{
+    this->second++;
+
+    if (this->second == 60)
+    {
+        this->second = 0;
+        this->minute++;
+    }
+
+    if (this->minute == 60)
+    {
+        this->minute = 0;
+        this->hour++;
+    }
+
+    if (this->hour == 24)
+    {
+        this->hour = 0;
+    }
+       return Time(this->hour, this->minute, this->second);
+}
+
+
+Time Time::operator--(int)
+{
+    this->second--;
+
+    if (this->second == -1)
+    {
+        this->second = 59;
+        this->minute--;
+    }
+
+    if (this->minute == -1)
+    {
+        this->minute = 59;
+        this->hour--;
+    }
+
+    if (this->hour == -1)
+    {
+        this->hour = 23;
+    }
+    return Time(this->hour, this->minute, this->second); //Samma här
+}
+
+Time& Time::operator++()
 {
     this->second++;
 
@@ -211,7 +298,7 @@ Time& Time::operator++(int)
 }
 
 
-Time& Time::operator--(int)
+Time& Time::operator--()
 {
     this->second--;
 
@@ -234,5 +321,15 @@ Time& Time::operator--(int)
     return *this; //Samma här
 }
 
+ostream& operator<<(ostream& os, Time& t)
+{
+    os << t.to_string();
+    return os;
+}
+/*
+Time Time::operator+(int N)
+{
+    int New_Time = to_seconds() + N;
 
-
+}
+*/
